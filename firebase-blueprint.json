@@ -1,0 +1,292 @@
+{
+  "entities": {
+    "UserPrivateAccount": {
+      "title": "UserPrivateAccount",
+      "description": "Private user account and Phase 2 profile record isolating PII per authenticated user.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Authenticated Firebase UID."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase UID matching the document path."
+        },
+        "fullName": {
+          "type": "string",
+          "description": "User's full name."
+        },
+        "username": {
+          "type": "string",
+          "description": "Unique lowercase username handle."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address isolated from public reads."
+        },
+        "phone": {
+          "type": "string",
+          "description": "Optional phone number isolated from public reads."
+        },
+        "profilePhoto": {
+          "type": "string",
+          "description": "Profile photo URL or selected URI reference."
+        },
+        "bio": {
+          "type": "string",
+          "description": "User biography."
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "enum": ["en", "bn", "hi"],
+          "description": "Preferred app UI language code."
+        },
+        "languageCode": {
+          "type": "string",
+          "enum": ["en", "bn", "hi"],
+          "description": "Preferred app UI language code alias."
+        },
+        "themeMode": {
+          "type": "string",
+          "enum": ["SYSTEM", "LIGHT", "DARK"],
+          "description": "Preferred UI theme mode."
+        },
+        "accountStatus": {
+          "type": "string",
+          "enum": ["ACTIVE", "SUSPENDED"],
+          "description": "User account status."
+        },
+        "privateAccount": {
+          "type": "boolean",
+          "description": "Whether the user's profile is set to private."
+        },
+        "notificationsEnabled": {
+          "type": "boolean",
+          "description": "Whether notification alerts are enabled."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": ["uid", "userId", "fullName", "username", "preferredLanguage", "languageCode", "themeMode", "accountStatus", "privateAccount", "notificationsEnabled", "createdAt", "updatedAt"]
+    },
+    "UsernameReservation": {
+      "title": "UsernameReservation",
+      "description": "Global uniqueness lock mapping lowercase username to owner UID.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Owner Firebase UID."
+        },
+        "username": {
+          "type": "string",
+          "description": "Reserved lowercase username."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": ["uid", "username", "createdAt"]
+    },
+    "PublicProfile": {
+      "title": "PublicProfile",
+      "description": "Publicly discoverable social profile without PII.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase UID."
+        },
+        "username": {
+          "type": "string",
+          "description": "Unique handle shown in feeds and search."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name shown on profile and cards."
+        },
+        "bio": {
+          "type": "string",
+          "description": "Short user biography."
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "Optional profile avatar URL."
+        },
+        "discoverable": {
+          "type": "boolean",
+          "description": "Explicit discovery flag for rule-enforced public listing."
+        },
+        "privateAccount": {
+          "type": "boolean",
+          "description": "Indicates private profile preference."
+        },
+        "followersCount": {
+          "type": "integer",
+          "description": "Follower count."
+        },
+        "followingCount": {
+          "type": "integer",
+          "description": "Following count."
+        },
+        "postsCount": {
+          "type": "integer",
+          "description": "Published post count."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": ["userId", "username", "displayName", "discoverable", "privateAccount", "followersCount", "followingCount", "postsCount", "createdAt", "updatedAt"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Social feed post created by an authenticated user.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "authorUsername": { "type": "string" },
+        "authorDisplayName": { "type": "string" },
+        "authorAvatarUrl": { "type": "string" },
+        "caption": { "type": "string" },
+        "mediaType": { "type": "string", "enum": ["IMAGE", "VIDEO", "TEXT"] },
+        "mediaUrl": { "type": "string" },
+        "category": { "type": "string", "enum": ["MOMENTS", "TRAVEL", "TECH", "ART", "FOOD", "MUSIC"] },
+        "visibility": { "type": "string", "enum": ["PUBLIC", "FOLLOWERS"] },
+        "likesCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorUsername", "authorDisplayName", "caption", "mediaType", "category", "visibility", "likesCount", "commentsCount", "createdAt", "updatedAt"]
+    },
+    "PostLike": {
+      "title": "PostLike",
+      "description": "Per-user like document for a post.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "createdAt"]
+    },
+    "PostComment": {
+      "title": "PostComment",
+      "description": "Comment on a social post.",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorUsername": { "type": "string" },
+        "authorAvatarUrl": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "authorId", "authorUsername", "text", "createdAt"]
+    },
+    "FollowRelation": {
+      "title": "FollowRelation",
+      "description": "Directed follow link between two users.",
+      "type": "object",
+      "properties": {
+        "followerId": { "type": "string" },
+        "followingId": { "type": "string" },
+        "followerUsername": { "type": "string" },
+        "followingUsername": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["followerId", "followingId", "followerUsername", "followingUsername", "createdAt"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "User-scoped activity notification.",
+      "type": "object",
+      "properties": {
+        "recipientId": { "type": "string" },
+        "actorId": { "type": "string" },
+        "actorUsername": { "type": "string" },
+        "actorAvatarUrl": { "type": "string" },
+        "type": { "type": "string", "enum": ["LIKE", "COMMENT", "FOLLOW", "SYSTEM"] },
+        "postId": { "type": "string" },
+        "message": { "type": "string" },
+        "readFlag": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["recipientId", "actorId", "actorUsername", "type", "message", "readFlag", "createdAt"]
+    },
+    "StoryItem": {
+      "title": "StoryItem",
+      "description": "Ephemeral story highlight with 24h expiration readiness.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "authorUsername": { "type": "string" },
+        "authorDisplayName": { "type": "string" },
+        "authorAvatarUrl": { "type": "string" },
+        "caption": { "type": "string" },
+        "accentColorHex": { "type": "string" },
+        "visibility": { "type": "string", "enum": ["PUBLIC"] },
+        "expiresAtMillis": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorUsername", "authorDisplayName", "caption", "accentColorHex", "visibility", "expiresAtMillis", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserPrivateAccount" },
+      "description": "Private user account and Phase 2 profile isolated to the owner."
+    },
+    "/usernames/{username}": {
+      "schema": { "$ref": "#/entities/UsernameReservation" },
+      "description": "Unique lowercase username reservation locks."
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/NotificationItem" },
+      "description": "User-scoped social activity notifications."
+    },
+    "/public_profiles/{userId}": {
+      "schema": { "$ref": "#/entities/PublicProfile" },
+      "description": "Public social profiles for feed attribution and search discovery."
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/Post" },
+      "description": "Social feed posts."
+    },
+    "/posts/{postId}/likes/{userId}": {
+      "schema": { "$ref": "#/entities/PostLike" },
+      "description": "Per-post user likes."
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/PostComment" },
+      "description": "Per-post user comments."
+    },
+    "/follows/{followId}": {
+      "schema": { "$ref": "#/entities/FollowRelation" },
+      "description": "Directed follow relationships."
+    },
+    "/stories/{storyId}": {
+      "schema": { "$ref": "#/entities/StoryItem" },
+      "description": "Active stories strip items."
+    }
+  }
+}
